@@ -1,0 +1,83 @@
+{
+  "name": "@harmoniclabs/cardano-wallet-solid",
+  "version": "0.1.0",
+  "description": "SolidJS CIP-30 wallet layer for Cardano — headless core plus an optional SUID connect button.",
+  "license": "MIT",
+  "author": "Harmonic Labs",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/HarmonicLabs/cardano-wallet-solid.git"
+  },
+  "keywords": [
+    "cardano",
+    "cip30",
+    "wallet",
+    "solid",
+    "solidjs"
+  ],
+  "type": "module",
+  "files": [
+    "dist",
+    "src"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "prepublishOnly": "npm run build"
+  },
+  "dependencies": {
+    "@harmoniclabs/cbor": "2.0.2",
+    "@harmoniclabs/crypto": "^0.3.1",
+    "@harmoniclabs/uint8array-utils": "^1.0.4"
+  },
+  "peerDependencies": {
+    "solid-js": "^1.9.0",
+    "@suid/material": "^0.19.0",
+    "@suid/icons-material": "^0.9.0"
+  },
+  "peerDependenciesMeta": {
+    "@suid/material": {
+      "optional": true
+    },
+    "@suid/icons-material": {
+      "optional": true
+    }
+  },
+  "devDependencies": {
+    "@suid/icons-material": "^0.9.0",
+    "@suid/material": "^0.19.0",
+    "solid-js": "^1.9.15",
+    "tsup": "^8.0.0",
+    "tsup-preset-solid": "^2.2.0",
+    "typescript": "^5.6.0",
+    "vitest": "^2.1.0"
+  },
+  "main": "./dist/index/index.js",
+  "module": "./dist/index/index.js",
+  "types": "./dist/index/index.d.ts",
+  "browser": {},
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/index/index.d.ts",
+        "default": "./dist/index/index.js"
+      }
+    },
+    "./suid": {
+      "solid": "./dist/suid/index.jsx",
+      "import": {
+        "types": "./dist/suid/index.d.ts",
+        "default": "./dist/suid/index.js"
+      }
+    }
+  },
+  "typesVersions": {
+    "*": {
+      "suid": [
+        "./dist/suid/index.d.ts"
+      ]
+    }
+  }
+}
