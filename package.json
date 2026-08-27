@@ -29,8 +29,7 @@
   },
   "dependencies": {
     "@harmoniclabs/cbor": "2.0.2",
-    "@harmoniclabs/crypto": "^0.3.1",
-    "@harmoniclabs/uint8array-utils": "^1.0.4"
+    "@harmoniclabs/crypto": "^0.3.1"
   },
   "peerDependencies": {
     "solid-js": "^1.9.0",

@@ -12,7 +12,6 @@
 //   - app root calls `initWallet()` once (detection + auto-reconnect)
 import { createStore } from 'solid-js/store';
 import { Cbor, CborArray, CborUInt } from '@harmoniclabs/cbor';
-import { fromHex } from '@harmoniclabs/uint8array-utils';
 import { encodeBech32 } from '@harmoniclabs/crypto';
 import {
 	NetworkId,
@@ -66,6 +65,27 @@ const defaults: WalletState = {
 
 const [wallet, setWallet] = createStore<WalletState>({ ...defaults });
 export { wallet };
+
+/**
+ * Hex string → bytes.
+ *
+ * Deliberately local rather than imported from @harmoniclabs/uint8array-utils:
+ * that package is CJS with no `module`/`exports` field, so bundlers resolving
+ * this package's ESM cannot find its named exports and every consumer would
+ * have to add it to `optimizeDeps`. It is a dozen lines; owning them removes a
+ * dependency and an interop hazard at once.
+ */
+export function fromHex(hex: string): Uint8Array {
+	const clean = hex.startsWith('0x') ? hex.slice(2) : hex;
+	if (clean.length % 2 !== 0) throw new Error(`invalid hex (odd length): ${hex}`);
+	const out = new Uint8Array(clean.length / 2);
+	for (let i = 0; i < out.length; i++) {
+		const byte = Number.parseInt(clean.substr(i * 2, 2), 16);
+		if (Number.isNaN(byte)) throw new Error(`invalid hex at byte ${i}: ${hex}`);
+		out[i] = byte;
+	}
+	return out;
+}
 
 /**
  * Network id of a Cardano address, from its header byte.
