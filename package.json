@@ -1,6 +1,6 @@
 {
   "name": "@harmoniclabs/cardano-wallet-solid",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "SolidJS CIP-30 wallet layer for Cardano — headless core plus an optional SUID connect button.",
   "license": "MIT",
   "author": "Harmonic Labs",

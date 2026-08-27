@@ -63,7 +63,28 @@ const defaults: WalletState = {
 	network: null,
 };
 
-const [wallet, setWallet] = createStore<WalletState>({ ...defaults });
+/**
+ * The store is pinned to `globalThis` behind a symbol so there is exactly ONE
+ * instance per page, no matter how many copies of this module a bundler
+ * produces.
+ *
+ * That is not paranoia: the "./suid" entry is published with a `solid` export
+ * condition pointing at a .jsx build that INLINES this module, while "." has no
+ * such condition and resolves to the shared chunk. An app importing both — the
+ * core for initWallet(), the button from /suid — therefore got two stores:
+ * detection populated one, the button rendered the other, and the wallet list
+ * was permanently empty. Dual ESM/CJS graphs and pnpm layouts cause the same
+ * split.
+ */
+const STORE_KEY = Symbol.for( '@harmoniclabs/cardano-wallet-solid:store' );
+
+type StorePair = [ WalletState, ReturnType<typeof createStore<WalletState>>[1] ];
+
+const globalRef = globalThis as unknown as Record<symbol, StorePair | undefined>;
+
+const [ wallet, setWallet ]: StorePair =
+	globalRef[ STORE_KEY ] ?? ( globalRef[ STORE_KEY ] = createStore<WalletState>({ ...defaults }) as StorePair );
+
 export { wallet };
 
 /**
